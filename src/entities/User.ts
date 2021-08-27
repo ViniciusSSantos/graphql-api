@@ -6,33 +6,34 @@ import {
     CreateDateColumn,
     UpdateDateColumn
   } from "typeorm";
-  import { Field, Int, ObjectType } from "type-graphql";
+  import { Field, ID, ObjectType } from "type-graphql";
   
   @ObjectType()
-  @Entity()
+  @Entity("users")
   export class User extends BaseEntity {
-    @Field(() => Int)
-    @PrimaryGeneratedColumn()
-    id!: number;
+   
+    @PrimaryGeneratedColumn("uuid")
+    @Field(() => ID)
+    id!: string;
   
-    @Field()
-    @Column()
+    @Field(() => String)
+    @Column({unique: true})
     name!: string;
 
-    @Field()
-    @Column()
+    @Field(() => String)
+    @Column({unique: true})
     email!: string;
   
-    @Field()
+    @Field(() => String)
     @Column()
     password!: string;  
  
   
     @Field(() => String)
     @CreateDateColumn()
-    createdAt!: string;
+    created_at!: Date;
 
     @Field(() => String)
     @UpdateDateColumn()
-    updatedAt!: string;
+    updated_at!: Date;
   }
