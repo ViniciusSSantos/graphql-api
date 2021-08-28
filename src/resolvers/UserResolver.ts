@@ -21,12 +21,27 @@ export class UserResolver extends BaseEntity{
     @Mutation(() => User)
     async createUser(
         @Arg("input", () => UserInput) input: UserInput        
-        ){        
+        ){
+         /*    const UserAlreadyExists = await User.findOne({ where: {email: input.email}})  
 
-        const user =  User.create(input);
-        return await user.save();
+            if(UserAlreadyExists){
+              return {
+                  errors: [{
+                    field: "email",
+                    message: "User already exists"
+                  }]
+              }
+            } */
+            
+        const passwordHash = await hash(input.password, 8)
+        
+        const user = User.create({name: input.name, email: input.email, password: passwordHash})
+       
+        
+        return user;
         
     }
+    
     
 }
 
